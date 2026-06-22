@@ -20,12 +20,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
-] + (['django.contrib.gis'] if os.environ.get('ENABLE_GIS', '').lower() in ('1', 'true') else []),
     'rest_framework',
     'corsheaders',
     'django_htmx',
     'rail',
 ]
+
+# Add GIS only when explicitly enabled
+if os.environ.get('ENABLE_GIS', '').lower() in ('1', 'true'):
+    INSTALLED_APPS.insert(-4, 'django.contrib.gis')
 
 # ── Middleware ───────────────────────────────────────────────────────────
 MIDDLEWARE = [
