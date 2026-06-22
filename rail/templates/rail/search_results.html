@@ -1,0 +1,44 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="search-page">
+    <div class="page-header">
+        <h1 class="page-title">Search Stations</h1>
+        <form action="{% url 'rail:search' %}" method="GET" class="search-form-large">
+            <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Enter station name or CRS code…"
+                   class="search-input-large" autocomplete="off" autofocus>
+            <button type="submit" class="search-btn-large">Search</button>
+        </form>
+    </div>
+
+    {% if query %}
+    <div class="search-results">
+        <p class="results-count">{{ results|length }} result{{ results|length|pluralize }} for "{{ query }}"</p>
+
+        {% if results %}
+        <div class="results-grid">
+            {% for station in results %}
+            <a href="{% url 'rail:station_detail' crs=station.crs_code.lower %}" class="station-card">
+                <div class="station-card-name">{{ station.name }}</div>
+                <div class="station-card-crs">{{ station.crs_code }}</div>
+                {% if station.region %}<div class="station-card-region">{{ station.region }}</div>{% endif %}
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results">
+            <p>No stations found matching "{{ query }}".</p>
+            <p class="muted">Try searching by station name (e.g. "Manchester") or 3-letter CRS code (e.g. "MAN").</p>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="search-hint">
+        <p>Start typing a station name or CRS code to search.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

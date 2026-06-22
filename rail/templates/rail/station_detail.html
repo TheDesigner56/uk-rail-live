@@ -1,0 +1,109 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block meta_keywords %}{{ meta_keywords }}{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">{{ structured_data|safe|default:'' }}</script>
+{% endblock %}
+
+{% block content %}
+<div class="station-page">
+    {# Station header #}
+    <div class="station-header">
+        <div class="station-header-left">
+            <h1 class="station-name">{{ station.name }}</h1>
+            <div class="station-meta">
+                <span class="station-crs-badge">CRS: {{ station.crs_code }}</span>
+                {% if station.operator %}<span class="station-operator">{{ station.operator }}</span>{% endif %}
+                {% if station.region %}<span class="station-region">{{ station.region }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="station-header-right">
+            <a href="{% url 'rail:map' %}" class="btn-secondary">📍 Map</a>
+            <a href="{% url 'rail:search' %}" class="btn-secondary">🔍 Search</a>
+        </div>
+    </div>
+
+    {% if api_error %}
+    <div class="api-error-banner">
+        <strong>⚠ Live data unavailable:</strong> {{ api_error }}
+        <p>Showing cached or previously fetched data. Updates will resume when the connection is restored.</p>
+    </div>
+    {% endif %}
+
+    {# Tab switcher #}
+    <div class="tab-switcher">
+        <button class="tab-btn active" data-tab="departures" onclick="switchTab('departures')">Departures</button>
+        <button class="tab-btn" data-tab="arrivals" onclick="switchTab('arrivals')">Arrivals</button>
+    </div>
+
+    {# Departures board #}
+    <div id="departures-tab" class="tab-content active">
+        <div class="board-header">
+            <div class="board-refresh-info">
+                <span class="refresh-indicator">●</span>
+                <span class="refresh-text">Auto-refreshes every 60s</span>
+                <span class="last-updated">Updated: <time id="dep-updated">just now</time></span>
+            </div>
+        </div>
+        <div
+            hx-get="{% url 'rail:station_departures_partial' crs=station.crs_code.lower %}"
+            hx-trigger="load, every 60s"
+            hx-swap="innerHTML"
+            hx-target="#departures-board"
+            id="departures-board"
+        >
+            <div class="loading-spinner">Loading departures…</div>
+        </div>
+    </div>
+
+    {# Arrivals board #}
+    <div id="arrivals-tab" class="tab-content">
+        <div class="board-header">
+            <div class="board-refresh-info">
+                <span class="refresh-indicator">●</span>
+                <span class="refresh-text">Auto-refreshes every 60s</span>
+                <span class="last-updated">Updated: <time id="arr-updated">just now</time></span>
+            </div>
+        </div>
+        <div
+            hx-get="{% url 'rail:station_arrivals_partial' crs=station.crs_code.lower %}"
+            hx-trigger="load, every 60s"
+            hx-swap="innerHTML"
+            hx-target="#arrivals-board"
+            id="arrivals-board"
+        >
+            <div class="loading-spinner">Loading arrivals…</div>
+        </div>
+    </div>
+
+    {# Station info #}
+    <div class="station-info">
+        <h2 class="info-title">Station Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">CRS Code</span>
+                <span class="info-value">{{ station.crs_code }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Full Name</span>
+                <span class="info-value">{{ station.full_name|default:station.name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Region</span>
+                <span class="info-value">{{ station.region|default:"N/A" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Operator</span>
+                <span class="info-value">{{ station.operator|default:"N/A" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Coordinates</span>
+                <span class="info-value">{{ station.lat|floatformat:4 }}, {{ station.lon|floatformat:4 }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="service-detail-page">
+    <div class="page-header">
+        <h1 class="page-title">Service {{ rid }}</h1>
+        <a href="javascript:history.back()" class="btn-secondary">← Back</a>
+    </div>
+
+    {% if api_error %}
+    <div class="api-error-banner">
+        <strong>⚠ Service data unavailable:</strong> {{ api_error }}
+    </div>
+    {% endif %}
+
+    {% if service %}
+    <div class="service-info-card">
+        <div class="service-info-row">
+            <span class="info-label">Service ID</span>
+            <span class="info-value">{{ service.rid }}</span>
+        </div>
+        {% if service.uid %}
+        <div class="service-info-row">
+            <span class="info-label">UID</span>
+            <span class="info-value">{{ service.uid }}</span>
+        </div>
+        {% endif %}
+        {% if service.operator %}
+        <div class="service-info-row">
+            <span class="info-label">Operator</span>
+            <span class="info-value">{{ service.operator }}</span>
+        </div>
+        {% endif %}
+        {% if service.origin %}
+        <div class="service-info-row">
+            <span class="info-label">Origin</span>
+            <span class="info-value">{{ service.origin }}</span>
+        </div>
+        {% endif %}
+        {% if service.destination %}
+        <div class="service-info-row">
+            <span class="info-label">Destination</span>
+            <span class="info-value">{{ service.destination }}</span>
+        </div>
+        {% endif %}
+        {% if service.platform %}
+        <div class="service-info-row">
+            <span class="info-label">Platform</span>
+            <span class="info-value mono">{{ service.platform }}</span>
+        </div>
+        {% endif %}
+        {% if service.std %}
+        <div class="service-info-row">
+            <span class="info-label">Scheduled Departure</span>
+            <span class="info-value mono">{{ service.std }}</span>
+        </div>
+        {% endif %}
+        {% if service.etd %}
+        <div class="service-info-row">
+            <span class="info-label">Estimated Departure</span>
+            <span class="info-value mono">{{ service.etd }}</span>
+        </div>
+        {% endif %}
+        {% if service.sta %}
+        <div class="service-info-row">
+            <span class="info-label">Scheduled Arrival</span>
+            <span class="info-value mono">{{ service.sta }}</span>
+        </div>
+        {% endif %}
+        {% if service.eta %}
+        <div class="service-info-row">
+            <span class="info-label">Estimated Arrival</span>
+            <span class="info-value mono">{{ service.eta }}</span>
+        </div>
+        {% endif %}
+        {% if service.cancel_reason %}
+        <div class="service-info-row cancel-reason-row">
+            <span class="info-label">Cancellation Reason</span>
+            <span class="info-value cancelled-text">{{ service.cancel_reason }}</span>
+        </div>
+        {% endif %}
+        {% if service.delay_reason %}
+        <div class="service-info-row delay-reason-row">
+            <span class="info-label">Delay Reason</span>
+            <span class="info-value delayed-text">{{ service.delay_reason }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if service.calling_points %}
+    <div class="calling-points">
+        <h2 class="info-title">Calling Points</h2>
+        <div class="calling-points-list">
+            {% for point in service.calling_points %}
+            <div class="calling-point">
+                <div class="calling-point-time">{{ point.time|default:"" }}</div>
+                <div class="calling-point-station">{{ point.location|default:"" }}</div>
+                {% if point.platform %}
+                <div class="calling-point-platform">Plat {{ point.platform }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="no-services">
+        <p>No service data available for RID {{ rid }}.</p>
+        <p class="muted">This service may have completed its journey, or the data may not be available.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

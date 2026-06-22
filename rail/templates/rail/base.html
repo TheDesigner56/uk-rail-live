@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UK Rail Live — Real-Time Train Departures & Disruptions{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}UK Rail Live — real-time train departures, arrivals, and disruption information for every UK railway station.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}UK trains, train times, live departures, rail disruptions, National Rail, train tracker{% endblock %}">
+    <meta name="author" content="UK Rail Live">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    {# Open Graph #}
+    <meta property="og:site_name" content="UK Rail Live">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page_title|default:'UK Rail Live'}}">
+    <meta property="og:description" content="{{ meta_description|default:'Real-time UK train departures and disruptions.' }}">
+    <meta property="og:locale" content="en_GB">
+
+    {# Twitter Card #}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ page_title|default:'UK Rail Live'}}">
+    <meta name="twitter:description" content="{{ meta_description|default:'Real-time UK train departures and disruptions.' }}">
+
+    {# Structured data #}
+    {% if structured_data %}
+    <script type="application/ld+json">{{ structured_data|safe|default:'' }}</script>
+    {% endif %}
+
+    {# MapLibre GL #}
+    {% block extra_head %}{% endblock %}
+
+    <link rel="stylesheet" href="{% static 'rail/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    {% if request.path == '/map/' %}
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    {% endif %}
+
+    <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+    <script src="{% static 'rail/js/main.js' %}" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="{% url 'rail:homepage' %}" class="logo">
+                <span class="logo-icon">🚆</span>
+                <span class="logo-text">UK Rail Live</span>
+            </a>
+            <nav class="nav">
+                <a href="{% url 'rail:homepage' %}" class="nav-link">Home</a>
+                <a href="{% url 'rail:station_list' %}" class="nav-link">Stations</a>
+                <a href="{% url 'rail:map' %}" class="nav-link">Map</a>
+                <a href="{% url 'rail:disruption_list' %}" class="nav-link">Disruptions</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <span class="theme-icon-dark">🌙</span>
+                    <span class="theme-icon-light">☀️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% if ad_slot_top and show_ads %}
+        <div class="ad-slot ad-top">
+            <!-- Ad slot: top banner -->
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+        {% if ad_slot_bottom and show_ads %}
+        <div class="ad-slot ad-bottom">
+            <!-- Ad slot: bottom banner -->
+        </div>
+        {% endif %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-section">
+                <h4>UK Rail Live</h4>
+                <p>Real-time UK train departures, arrivals, and disruption information.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'rail:homepage' %}">Home</a></li>
+                    <li><a href="{% url 'rail:station_list' %}">All Stations</a></li>
+                    <li><a href="{% url 'rail:map' %}">Station Map</a></li>
+                    <li><a href="{% url 'rail:disruption_list' %}">Disruptions</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>API</h4>
+                <ul>
+                    <li><a href="/api/stations/">Stations API</a></li>
+                    <li><a href="/sitemap.xml">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Data</h4>
+                <p>Powered by National Rail Darwin API. Data updates every 60 seconds.</p>
+                <p class="station-count">{{ total_station_count|default:"0" }} stations tracked</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} UK Rail Live. All times shown in UK local time.</p>
+        </div>
+    </footer>
+</body>
+</html>

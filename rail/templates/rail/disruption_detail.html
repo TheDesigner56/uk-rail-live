@@ -1,0 +1,49 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="disruption-detail-page">
+    <div class="page-header">
+        <a href="{% url 'rail:disruption_list' %}" class="btn-secondary">← All Disruptions</a>
+    </div>
+
+    <div class="disruption-detail-card disruption-{{ disruption.severity }}">
+        <div class="disruption-detail-header">
+            <span class="disruption-severity severity-{{ disruption.severity }}">{{ disruption.severity|upper }}</span>
+            <span class="disruption-type">{{ disruption.type }}</span>
+        </div>
+        <h1 class="disruption-title">{{ disruption.summary }}</h1>
+
+        <div class="disruption-meta">
+            <div class="meta-item">
+                <span class="meta-label">Started</span>
+                <span class="meta-value">{{ disruption.start_time|date:"d M Y H:i" }}</span>
+            </div>
+            {% if disruption.end_time %}
+            <div class="meta-item">
+                <span class="meta-label">Expected End</span>
+                <span class="meta-value">{{ disruption.end_time|date:"d M Y H:i" }}</span>
+            </div>
+            {% endif %}
+            <div class="meta-item">
+                <span class="meta-label">Status</span>
+                <span class="meta-value">
+                    {% if disruption.is_active %}<span class="active-badge">Active</span>{% else %}<span class="resolved-badge">Resolved</span>{% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="disruption-detail-body">
+            <h3>Description</h3>
+            <p>{{ disruption.description|linebreaks }}</p>
+
+            {% if disruption.affected_routes %}
+            <h3>Affected Routes</h3>
+            <p>{{ disruption.affected_routes }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

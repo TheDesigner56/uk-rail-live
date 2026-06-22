@@ -1,0 +1,38 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="disruption-list-page">
+    <div class="page-header">
+        <h1 class="page-title">Live Disruptions</h1>
+        <p class="page-subtitle">Current network-wide incidents and service updates</p>
+    </div>
+
+    {% if disruptions %}
+    <div class="disruption-feed">
+        {% for d in disruptions %}
+        <a href="{% url 'rail:disruption_detail' incident_id=d.incident_id %}" class="disruption-card disruption-{{ d.severity }}">
+            <div class="disruption-header">
+                <span class="disruption-severity severity-{{ d.severity }}">{{ d.severity|upper }}</span>
+                <span class="disruption-type">{{ d.type }}</span>
+                <span class="disruption-time">Since {{ d.start_time|date:"d M H:i" }}</span>
+            </div>
+            <div class="disruption-summary">{{ d.summary }}</div>
+            <div class="disruption-description">{{ d.description|truncatewords:30 }}</div>
+            {% if d.affected_routes %}
+            <div class="disruption-routes">Affected: {{ d.affected_routes }}</div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-disruptions-card">
+        <h2>✅ All Clear</h2>
+        <p>No active disruptions reported on the UK rail network at this time.</p>
+        <p class="muted">Last checked: {% now "d M Y H:i" %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

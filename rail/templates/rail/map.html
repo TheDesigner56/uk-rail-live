@@ -1,0 +1,90 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="map-page">
+    <div class="map-header">
+        <h1 class="page-title">UK Railway Station Map</h1>
+        <p class="page-subtitle">Click any station marker to view live departures</p>
+    </div>
+
+    <div id="fullmap" class="fullmap-container"></div>
+
+    <div id="station-popup" class="station-popup" style="display:none;">
+        <a href="" class="popup-link">View Departures →</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var geojson = {{ geojson|safe|default:'{"type":"FeatureCollection","features":[]}' }};
+
+    var map = new maplibregl.Map({
+        container: 'fullmap',
+        style: {
+            version: 8,
+            sources: {
+                'osm-tiles': {
+                    type: 'raster',
+                    tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                    tileSize: 256,
+                    attribution: '© OpenStreetMap contributors'
+                }
+            },
+            layers: [{
+                id: 'osm-layer',
+                type: 'raster',
+                source: 'osm-tiles'
+            }]
+        },
+        center: [-1.5, 53.0],
+        zoom: 5.5,
+        attributionControl: true
+    });
+
+    map.addControl(new maplibregl.NavigationControl());
+
+    map.on('load', function() {
+        map.addSource('stations', {
+            type: 'geojson',
+            data: geojson
+        });
+
+        map.addLayer({
+            id: 'stations-points',
+            type: 'circle',
+            source: 'stations',
+            paint: {
+                'circle-radius': 6,
+                'circle-color': '#3b82f6',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff'
+            }
+        });
+
+        var popup = new maplibregl.Popup({ closeButton: false, offset: 15 });
+
+        map.on('click', 'stations-points', function(e) {
+            var prop = e.features[0].properties;
+            var html = '<div class="map-popup-content">' +
+                '<strong>' + prop.name + '</strong><br>' +
+                'CRS: ' + prop.crs + '<br>' +
+                '<a href="/stations/' + prop.crs.toLowerCase() + '/" class="map-popup-link">View Departures →</a>' +
+                '</div>';
+            popup.setLngLat(e.features[0].geometry.coordinates.slice())
+                 .setHTML(html)
+                 .addTo(map);
+        });
+
+        map.on('mouseenter', 'stations-points', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'stations-points', function() {
+            map.getCanvas().style.cursor = '';
+        });
+    });
+});
+</script>
+{% endblock %}

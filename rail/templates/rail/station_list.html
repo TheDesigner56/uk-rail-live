@@ -1,0 +1,28 @@
+{% extends "rail/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<div class="station-list-page">
+    <div class="page-header">
+        <h1 class="page-title">All UK Railway Stations</h1>
+        <p class="page-subtitle">{{ stations|length }} stations tracked</p>
+    </div>
+
+    <form action="{% url 'rail:search' %}" method="GET" class="search-form">
+        <input type="text" name="q" placeholder="Filter stations…" class="search-input" autocomplete="off">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <div class="station-list-grid">
+        {% for station in stations %}
+        <a href="{% url 'rail:station_detail' crs=station.crs_code.lower %}" class="station-list-item">
+            <div class="station-list-name">{{ station.name }}</div>
+            <div class="station-list-crs">{{ station.crs_code }}</div>
+            {% if station.region %}<div class="station-list-region">{{ station.region }}</div>{% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

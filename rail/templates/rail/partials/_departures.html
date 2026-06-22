@@ -1,0 +1,62 @@
+{# HTMX partial: departures board #}
+{% if api_error %}
+<div class="api-error-banner">
+    <strong>⚠ Live Data Unavailable:</strong> {{ api_error }}
+    <p>Data will refresh automatically when the connection is restored.</p>
+</div>
+{% endif %}
+
+{% if departures %}
+<table class="board-table departures-table">
+    <thead>
+        <tr>
+            <th class="th-time">Time</th>
+            <th class="th-destination">Destination</th>
+            <th class="th-platform">Plat</th>
+            <th class="th-operator">Operator</th>
+            <th class="th-status">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dep in departures %}
+        <tr class="board-row {% if dep.is_cancelled %}row-cancelled{% elif dep.is_delayed %}row-delayed{% endif %}">
+            <td class="td-time">
+                <span class="time-scheduled">{{ dep.scheduled }}</span>
+                {% if dep.is_cancelled %}
+                <span class="time-estimated cancelled">Cancelled</span>
+                {% elif dep.is_delayed %}
+                <span class="time-estimated delayed">{{ dep.estimated }}</span>
+                {% else %}
+                <span class="time-estimated ontime">{{ dep.estimated }}</span>
+                {% endif %}
+            </td>
+            <td class="td-destination">
+                <a href="{% url 'rail:station_detail' crs=dep.dest_crs.lower|default:'' %}" class="destination-link">
+                    {{ dep.destination }}
+                </a>
+                {% if dep.rid %}
+                <a href="{% url 'rail:service_detail' rid=dep.rid %}" class="service-link">→</a>
+                {% endif %}
+            </td>
+            <td class="td-platform">{{ dep.platform|default:"—" }}</td>
+            <td class="td-operator">{{ dep.operator }}</td>
+            <td class="td-status">
+                {% if dep.is_cancelled %}
+                <span class="status-tag status-cancelled">Cancelled</span>
+                {% if dep.cancel_reason %}<div class="cancel-reason">{{ dep.cancel_reason }}</div>{% endif %}
+                {% elif dep.is_delayed %}
+                <span class="status-tag status-delayed">+{{ dep.delay_minutes }}min</span>
+                {% else %}
+                <span class="status-tag status-ontime">On Time</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="no-services">
+    <p>No departures available.</p>
+    {% if not api_error %}<p class="muted">There may be no scheduled services at this time.</p>{% endif %}
+</div>
+{% endif %}

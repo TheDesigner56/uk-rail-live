@@ -1,0 +1,132 @@
+{% extends "rail/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block meta_keywords %}{{ meta_keywords }}{% endblock %}
+
+{% block extra_head %}
+{% if not request.path == '/map/' %}
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="homepage">
+    {# Search bar #}
+    <section class="hero-search">
+        <h1 class="hero-title">UK Rail Live</h1>
+        <p class="hero-subtitle">Real-time departures, arrivals & disruptions for every UK station</p>
+        <form action="{% url 'rail:search' %}" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search station name or CRS code (e.g. Paddington, PAD)…"
+                   class="search-input" autocomplete="off" autofocus>
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </section>
+
+    {# Major stations quick access #}
+    <section class="major-stations">
+        <h2 class="section-title">Popular Stations</h2>
+        <div class="station-grid">
+            {% for station in stations %}
+            <a href="{% url 'rail:station_detail' crs=station.crs_code.lower %}" class="station-card">
+                <div class="station-card-name">{{ station.name }}</div>
+                <div class="station-card-crs">{{ station.crs_code }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    {# Map preview #}
+    <section class="map-preview">
+        <h2 class="section-title">Station Map</h2>
+        <div id="map" class="map-container"></div>
+        <a href="{% url 'rail:map' %}" class="full-map-link">View full-screen map →</a>
+    </section>
+
+    {# Live disruptions #}
+    <section class="live-disruptions">
+        <h2 class="section-title">Live Disruptions</h2>
+        {% if disruptions %}
+        <div class="disruption-list">
+            {% for d in disruptions %}
+            <a href="{% url 'rail:disruption_detail' incident_id=d.incident_id %}" class="disruption-card disruption-{{ d.severity }}">
+                <div class="disruption-header">
+                    <span class="disruption-severity severity-{{ d.severity }}">{{ d.severity|upper }}</span>
+                    <span class="disruption-type">{{ d.type }}</span>
+                </div>
+                <div class="disruption-summary">{{ d.summary }}</div>
+            </a>
+            {% endfor %}
+        </div>
+        <a href="{% url 'rail:disruption_list' %}" class="view-all-link">View all disruptions →</a>
+        {% else %}
+        <p class="no-disruptions">No active disruptions reported.</p>
+        {% endif %}
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialise mini-map on homepage
+    if (typeof maplibregl !== 'undefined') {
+        var stations = {{ geojson|default:'{"type":"FeatureCollection","features":[]}'|safe }};
+
+        var map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                version: 8,
+                sources: {
+                    'osm-tiles': {
+                        type: 'raster',
+                        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                        tileSize: 256,
+                        attribution: '© OpenStreetMap contributors'
+                    }
+                },
+                layers: [{
+                    id: 'osm-layer',
+                    type: 'raster',
+                    source: 'osm-tiles'
+                }]
+            },
+            center: [-1.5, 53.0],
+            zoom: 5,
+            attributionControl: true
+        });
+
+        map.on('load', function() {
+            map.addSource('stations', {
+                type: 'geojson',
+                data: stations
+            });
+
+            map.addLayer({
+                id: 'stations-points',
+                type: 'circle',
+                source: 'stations',
+                paint: {
+                    'circle-radius': 5,
+                    'circle-color': '#3b82f6',
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': '#ffffff'
+                }
+            });
+
+            map.on('click', 'stations-points', function(e) {
+                var prop = e.features[0].properties;
+                window.location.href = '/stations/' + prop.crs.toLowerCase() + '/';
+            });
+
+            map.on('mouseenter', 'stations-points', function() {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'stations-points', function() {
+                map.getCanvas().style.cursor = '';
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
