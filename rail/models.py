@@ -1,6 +1,12 @@
 """Models for UK Rail Live."""
 from django.db import models
-from django.contrib.gis.db.models import PointField
+from django.conf import settings
+
+# Use GIS PointField if available, otherwise skip
+if "django.contrib.gis" in settings.INSTALLED_APPS:
+    from django.contrib.gis.db.models import PointField
+else:
+    PointField = None
 
 
 class Station(models.Model):
@@ -11,7 +17,7 @@ class Station(models.Model):
     full_name = models.CharField(max_length=300, blank=True)
     lat = models.FloatField()
     lon = models.FloatField()
-    location = PointField(srid=4326, null=True, blank=True)
+    location = PointField(srid=4326, null=True, blank=True) if PointField else None
     region = models.CharField(max_length=100, blank=True)
     operator = models.CharField(max_length=200, blank=True)
 
@@ -22,7 +28,7 @@ class Station(models.Model):
         return f"{self.name} ({self.crs_code})"
 
     def save(self, *args, **kwargs):
-        if self.lat and self.lon:
+        if self.lat and self.lon and PointField:
             from django.contrib.gis.geos import Point
             self.location = Point(self.lon, self.lat, srid=4326)
         super().save(*args, **kwargs)

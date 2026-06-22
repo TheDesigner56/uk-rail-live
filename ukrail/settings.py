@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
-    'django.contrib.gis',
+] + (['django.contrib.gis'] if os.environ.get('ENABLE_GIS', '').lower() in ('1', 'true') else []),
     'rest_framework',
     'corsheaders',
     'django_htmx',
@@ -66,23 +66,34 @@ WSGI_APPLICATION = 'ukrail.wsgi.application'
 ASGI_APPLICATION = 'ukrail.asgi.application'
 
 # ── Database ─────────────────────────────────────────────────────────────
-# Use PostGIS when DATABASE_URL is set (Neon / production), sqlite for local dev.
+# Database: PostGIS when DATABASE_URL is set, SQLite otherwise
+USE_GIS = False
 if os.environ.get('DATABASE_URL'):
-    # Parse Neon/Postgres URL — django-fernet / dj-database-url style
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.parse(
-            os.environ['DATABASE_URL'],
-            conn_max_age=600,
-            conn_health_check=True,
-        )
-    }
-    # PostGIS extension if using Postgres with it
-    DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(
+                os.environ['DATABASE_URL'],
+                conn_max_age=600,
+                conn_health_check=True,
+            )
+        }
+        try:
+            DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+            USE_GIS = True
+        except Exception:
+            pass
+    except Exception:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+            'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
