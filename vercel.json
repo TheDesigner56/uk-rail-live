@@ -7,7 +7,7 @@
         "maxLambdaSize": "15mb",
         "runtime": "python3.12",
         "buildCommand": "bash build.sh",
-        "includeFiles": "staticfiles/**,rail/fixtures/**,db.sqlite3"
+        "includeFiles": "staticfiles/**,rail/fixtures/**"
       }
     }
   ],
