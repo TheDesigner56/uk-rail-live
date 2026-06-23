@@ -34,3 +34,5 @@ Thumbs.db
 # Logs
 *.log
 .vercel
+venv/
+.env.neon

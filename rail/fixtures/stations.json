@@ -1,0 +1,392 @@
+[
+{
+  "model": "rail.station",
+  "pk": 4,
+  "fields": {
+    "crs_code": "BHM",
+    "name": "Birmingham New Street",
+    "full_name": "Birmingham New Street",
+    "lat": 52.4771,
+    "lon": -1.899,
+    "region": "West Midlands",
+    "operator": "West Midlands Railway / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 28,
+  "fields": {
+    "crs_code": "BNS",
+    "name": "Brighton",
+    "full_name": "Brighton",
+    "lat": 50.829,
+    "lon": -0.141,
+    "region": "South East",
+    "operator": "Southern / Thameslink / Gatwick Express"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 8,
+  "fields": {
+    "crs_code": "BRI",
+    "name": "Bristol Temple Meads",
+    "full_name": "Bristol Temple Meads",
+    "lat": 51.449,
+    "lon": -2.5767,
+    "region": "South West",
+    "operator": "Great Western Railway / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 27,
+  "fields": {
+    "crs_code": "CBG",
+    "name": "Cambridge",
+    "full_name": "Cambridge",
+    "lat": 52.208,
+    "lon": 0.131,
+    "region": "East",
+    "operator": "Greater Anglia / Thameslink / Great Northern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 26,
+  "fields": {
+    "crs_code": "CNY",
+    "name": "Canterbury East",
+    "full_name": "Canterbury East",
+    "lat": 51.2765,
+    "lon": 1.087,
+    "region": "South East",
+    "operator": "Southeastern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 5,
+  "fields": {
+    "crs_code": "EDB",
+    "name": "Edinburgh Waverley",
+    "full_name": "Edinburgh Waverley",
+    "lat": 55.9532,
+    "lon": -3.1904,
+    "region": "Scotland",
+    "operator": "LNER / ScotRail"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 30,
+  "fields": {
+    "crs_code": "EXR",
+    "name": "Exeter St Davids",
+    "full_name": "Exeter St Davids",
+    "lat": 50.733,
+    "lon": -3.543,
+    "region": "South West",
+    "operator": "Great Western Railway / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 6,
+  "fields": {
+    "crs_code": "GLC",
+    "name": "Glasgow Central",
+    "full_name": "Glasgow Central",
+    "lat": 55.8593,
+    "lon": -4.259,
+    "region": "Scotland",
+    "operator": "Avanti West Coast / ScotRail"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 7,
+  "fields": {
+    "crs_code": "LDS",
+    "name": "Leeds",
+    "full_name": "Leeds",
+    "lat": 53.7956,
+    "lon": -1.5491,
+    "region": "Yorkshire",
+    "operator": "Northern / LNER / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 23,
+  "fields": {
+    "crs_code": "LVP",
+    "name": "Liverpool Lime Street",
+    "full_name": "Liverpool Lime Street",
+    "lat": 53.4071,
+    "lon": -2.979,
+    "region": "North West",
+    "operator": "Avanti West Coast / Northern / TransPennine Express"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 15,
+  "fields": {
+    "crs_code": "LBG",
+    "name": "London Bridge",
+    "full_name": "London Bridge",
+    "lat": 51.5047,
+    "lon": -0.0865,
+    "region": "London",
+    "operator": "Southeastern / Thameslink"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 16,
+  "fields": {
+    "crs_code": "CST",
+    "name": "London Cannon Street",
+    "full_name": "London Cannon Street",
+    "lat": 51.5114,
+    "lon": -0.0906,
+    "region": "London",
+    "operator": "Southeastern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 17,
+  "fields": {
+    "crs_code": "CTK",
+    "name": "London Charing Cross",
+    "full_name": "London Charing Cross",
+    "lat": 51.5084,
+    "lon": -0.1239,
+    "region": "London",
+    "operator": "Southeastern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 12,
+  "fields": {
+    "crs_code": "EUS",
+    "name": "London Euston",
+    "full_name": "London Euston",
+    "lat": 51.5281,
+    "lon": -0.1337,
+    "region": "London",
+    "operator": "Avanti West Coast"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 18,
+  "fields": {
+    "crs_code": "FST",
+    "name": "London Fenchurch Street",
+    "full_name": "London Fenchurch Street",
+    "lat": 51.5119,
+    "lon": -0.0793,
+    "region": "London",
+    "operator": "c2c"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 11,
+  "fields": {
+    "crs_code": "KIN",
+    "name": "London Kings Cross",
+    "full_name": "London Kings Cross",
+    "lat": 51.5308,
+    "lon": -0.1238,
+    "region": "London",
+    "operator": "LNER / Thameslink"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 13,
+  "fields": {
+    "crs_code": "LST",
+    "name": "London Liverpool Street",
+    "full_name": "London Liverpool Street",
+    "lat": 51.5179,
+    "lon": -0.0816,
+    "region": "London",
+    "operator": "Greater Anglia / Elizabeth Line"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 19,
+  "fields": {
+    "crs_code": "MDV",
+    "name": "London Marylebone",
+    "full_name": "London Marylebone",
+    "lat": 51.5226,
+    "lon": -0.1587,
+    "region": "London",
+    "operator": "Chiltern Railways"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 1,
+  "fields": {
+    "crs_code": "PAD",
+    "name": "London Paddington",
+    "full_name": "London Paddington",
+    "lat": 51.5152,
+    "lon": -0.1755,
+    "region": "London",
+    "operator": "Great Western Railway"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 20,
+  "fields": {
+    "crs_code": "SPX",
+    "name": "London St Pancras International",
+    "full_name": "London St Pancras International",
+    "lat": 51.5307,
+    "lon": -0.1238,
+    "region": "London",
+    "operator": "Eurostar / Southeastern / East Midlands Railway"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 14,
+  "fields": {
+    "crs_code": "VIC",
+    "name": "London Victoria",
+    "full_name": "London Victoria",
+    "lat": 51.4953,
+    "lon": -0.144,
+    "region": "London",
+    "operator": "Southeastern / Southern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 2,
+  "fields": {
+    "crs_code": "WAT",
+    "name": "London Waterloo",
+    "full_name": "London Waterloo",
+    "lat": 51.503,
+    "lon": -0.1132,
+    "region": "London",
+    "operator": "South Western Railway"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 3,
+  "fields": {
+    "crs_code": "MAN",
+    "name": "Manchester Piccadilly",
+    "full_name": "Manchester Piccadilly",
+    "lat": 53.4773,
+    "lon": -2.2304,
+    "region": "North West",
+    "operator": "Northern / Avanti West Coast"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 22,
+  "fields": {
+    "crs_code": "NCL",
+    "name": "Newcastle",
+    "full_name": "Newcastle",
+    "lat": 54.9693,
+    "lon": -1.614,
+    "region": "North East",
+    "operator": "LNER / CrossCountry / Northern"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 25,
+  "fields": {
+    "crs_code": "NOT",
+    "name": "Nottingham",
+    "full_name": "Nottingham",
+    "lat": 52.948,
+    "lon": -1.139,
+    "region": "East Midlands",
+    "operator": "East Midlands Railway / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 10,
+  "fields": {
+    "crs_code": "OXF",
+    "name": "Oxford",
+    "full_name": "Oxford",
+    "lat": 51.736,
+    "lon": -1.249,
+    "region": "South East",
+    "operator": "Great Western Railway / Chiltern Railways"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 9,
+  "fields": {
+    "crs_code": "RDG",
+    "name": "Reading",
+    "full_name": "Reading",
+    "lat": 51.4614,
+    "lon": -0.974,
+    "region": "South East",
+    "operator": "Great Western Railway"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 24,
+  "fields": {
+    "crs_code": "SHF",
+    "name": "Sheffield",
+    "full_name": "Sheffield",
+    "lat": 53.4117,
+    "lon": -1.4607,
+    "region": "Yorkshire",
+    "operator": "Northern / CrossCountry / East Midlands Railway"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 29,
+  "fields": {
+    "crs_code": "SOU",
+    "name": "Southampton Central",
+    "full_name": "Southampton Central",
+    "lat": 50.712,
+    "lon": -1.414,
+    "region": "South East",
+    "operator": "South Western Railway / CrossCountry"
+  }
+},
+{
+  "model": "rail.station",
+  "pk": 21,
+  "fields": {
+    "crs_code": "YRK",
+    "name": "York",
+    "full_name": "York",
+    "lat": 53.9577,
+    "lon": -1.094,
+    "region": "Yorkshire",
+    "operator": "LNER / CrossCountry / TransPennine Express"
+  }
+}
+]
